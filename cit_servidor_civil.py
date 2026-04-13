@@ -108,6 +108,8 @@ if "ultimo_termo" not in st.session_state:
     st.session_state.ultimo_termo = ""
 if "ultimo_modo" not in st.session_state:
     st.session_state.ultimo_modo = "normal"
+if "uploader_key" not in st.session_state:
+    st.session_state.uploader_key = 0
 
 # ─── Funções auxiliares ────────────────────────────────────────────────────────
 
@@ -273,6 +275,7 @@ with st.sidebar:
         type=["pdf"],
         accept_multiple_files=True,
         label_visibility="collapsed",
+        key=f"uploader_{st.session_state.uploader_key}",
     )
 
     if uploaded:
@@ -314,6 +317,8 @@ with st.sidebar:
             st.session_state.df_resultados = None
             st.session_state.snippets_map = {}
             st.session_state.ultimo_termo = ""
+            st.session_state.ultimo_modo = "normal"
+            st.session_state.uploader_key += 1  # força recriação do widget file_uploader
             st.rerun()
 
 # ─── Área principal ────────────────────────────────────────────────────────────
