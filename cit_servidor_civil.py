@@ -292,7 +292,18 @@ with st.sidebar:
     if total_arqs == 0:
         st.info("Nenhum arquivo carregado ainda.")
     else:
-        st.markdown(f"**{total_arqs} arquivo(s) na fila:**")
+        col_count, col_clear = st.columns([3, 2])
+        col_count.markdown(f"**{total_arqs} arquivo(s) na fila**")
+        if col_clear.button("🗑️ Limpar tudo", use_container_width=True, type="secondary"):
+            st.session_state.uploaded_files_data = {}
+            st.session_state.df_resultados = None
+            st.session_state.snippets_map = {}
+            st.session_state.ultimo_termo = ""
+            st.session_state.ultimo_modo = "normal"
+            st.session_state.uploader_key += 1
+            st.rerun()
+
+        st.divider()
 
         # Lista com botão de remover individual
         para_remover = []
@@ -307,18 +318,6 @@ with st.sidebar:
 
         for nome in para_remover:
             del st.session_state.uploaded_files_data[nome]
-            st.rerun()
-
-        st.divider()
-
-        # Botão de limpar tudo — CORRIGIDO
-        if st.button("🗑️ Limpar tudo", use_container_width=True, type="secondary"):
-            st.session_state.uploaded_files_data = {}
-            st.session_state.df_resultados = None
-            st.session_state.snippets_map = {}
-            st.session_state.ultimo_termo = ""
-            st.session_state.ultimo_modo = "normal"
-            st.session_state.uploader_key += 1  # força recriação do widget file_uploader
             st.rerun()
 
 # ─── Área principal ────────────────────────────────────────────────────────────
